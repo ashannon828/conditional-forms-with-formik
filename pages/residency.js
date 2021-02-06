@@ -3,7 +3,16 @@ import Head from "next/head";
 import { Field, Form, Formik, FormikProps } from "formik";
 import * as Yup from "yup";
 
-let validationShape = {
+const submitFunc = (values, { setSubmitting, resetForm }) => {
+  setSubmitting(true);
+  setTimeout(() => {
+    alert(JSON.stringify(values, null, 2));
+  }, 1000);
+  setSubmitting(false);
+  resetForm();
+};
+
+const validationShape = {
   name: Yup.string().required("Enter your name"),
   email: Yup.string()
     .email("Enter a valid email")
@@ -44,17 +53,13 @@ export default function residency() {
             message: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-
-              actions.setSubmitting(false);
-            }, 1000);
-          }}
+          onSubmit={submitFunc}
         >
-          {({ values, errors, touched }) => (
+          {({ values, errors, touched, isSubmitting }) => (
             <Form>
-              Errors: {JSON.stringify(errors)}
+              <p>Errors: {JSON.stringify(errors)}</p>
+              <p>Is submitting: {isSubmitting}</p>
+
               <div>
                 <label htmlFor="name">Name*</label>
                 <Field type="text" id="name" name="name" />
@@ -100,7 +105,9 @@ export default function residency() {
                 <Field as="textarea" id="message" name="message" />
               </div>
               <div>
-                <button type="submit">Submit</button>
+                <button type="submit" disabled={isSubmitting}>
+                  Send
+                </button>
               </div>
               {JSON.stringify(values)}
             </Form>
