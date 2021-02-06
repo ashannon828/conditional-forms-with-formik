@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Field, Form, Formik, FormikProps } from "formik";
 import * as Yup from "yup";
 
-const validationSchema = Yup.object().shape({
+let validationShape = {
   name: Yup.string().required("Enter your name"),
   email: Yup.string()
     .email("Enter a valid email")
@@ -14,9 +14,16 @@ const validationSchema = Yup.object().shape({
   citizenship: Yup.string()
     .min(2, "Enter a valid country")
     .required("Enter your country of citizenship"),
-  country_other: Yup.string().required("Enter a country"),
-  message: Yup.string(),
-});
+  relocation_country: Yup.string(),
+  other_country: Yup.string().when("relocation_country", {
+    is: (country) => country === "other",
+    then: Yup.string().required("Enter your desired country"),
+    otherwise: null,
+  }),
+};
+
+const validationSchema = Yup.object().shape(validationShape);
+
 export default function residency() {
   return (
     <div>
@@ -27,42 +34,45 @@ export default function residency() {
       <main>
         <h1>Residency Consultation</h1>
         <Formik
-          validationSchema={validationSchema}
           initialValues={{
             name: "",
             email: "",
             confirmEmail: "",
             citizenship: "",
             relocation_country: "russia",
-            country_other: "",
+            other_country: "",
             message: "",
           }}
+          validationSchema={validationSchema}
+          onSubmit={(values, actions) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+
+              actions.setSubmitting(false);
+            }, 1000);
+          }}
         >
-          {({ values, errors, touched, handleChange, handleBlur }) => (
+          {({ values, errors, touched }) => (
             <Form>
+              Errors: {JSON.stringify(errors)}
               <div>
                 <label htmlFor="name">Name*</label>
-                <Field
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  id="name"
-                  name="name"
-                />
+                <Field type="text" id="name" name="name" />
                 {touched.name && errors.name}
               </div>
               <div>
                 <label htmlFor="email">Email*</label>
-                <Field id="email" name="email" />
+                <Field type="text" id="email" name="email" />
                 {touched.email && errors.email}
               </div>
               <div>
                 <label htmlFor="confirmEmail">Confirm Email*</label>
-                <Field id="confirmEmail" name="confirmEmail" />
+                <Field type="text" id="confirmEmail" name="confirmEmail" />
                 {touched.confirmEmail && errors.confirmEmail}
               </div>
               <div>
                 <label htmlFor="citizenship">Country of Citizenship*</label>
-                <Field id="citizenship" name="citizenship" />
+                <Field type="text" id="citizenship" name="citizenship" />
                 {touched.citizenship && errors.citizenship}
               </div>
               <div>
@@ -80,9 +90,9 @@ export default function residency() {
               </div>
               {values.relocation_country === "other" && (
                 <div>
-                  <label htmlFor="country_other">Enter a country*</label>
-                  <Field id="country_other" name="country_other" />
-                  {touched.country_other && errors.country_other}
+                  <label htmlFor="other_country">Enter a country*</label>
+                  <Field id="other_country" name="other_country" />
+                  {touched.other_country && errors.other_country}
                 </div>
               )}
               <div>
@@ -90,7 +100,7 @@ export default function residency() {
                 <Field as="textarea" id="message" name="message" />
               </div>
               <div>
-                <button type="submit">Send</button>
+                <button type="submit">Submit</button>
               </div>
               {JSON.stringify(values)}
             </Form>

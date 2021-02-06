@@ -1,28 +1,34 @@
-import Head from "next/head";
+import React from "react";
 
 import { Field, Form, Formik, FormikProps } from "formik";
-import * as Yup from "yup";
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Enter your name"),
-  email: Yup.string().email("Enter a valid email address"),
-  confirmEmail: Yup.string(),
-  citizenship: Yup.string(),
-  relocation_country: Yup.string(),
-  country_other: Yup.string(),
-  message: Yup.string(),
-});
+const MyInput = ({ field, form, ...props }) => {
+  return <input {...field} {...props} />;
+};
 
 export default function Home() {
   return (
     <div>
-      <Head>
-        <title>Contact</title>
-      </Head>
+      <h1>My Form</h1>
 
-      <main>
-        <h1>Contact Us</h1>
-      </main>
+      <Formik
+        initialValues={{ email: "", color: "red", firstName: "", lastName: "" }}
+        onSubmit={(values, actions) => {
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+
+            actions.setSubmitting(false);
+          }, 1000);
+        }}
+      >
+        {(FormikProps) => (
+          <Form>
+            <Field name="firstName" placeholder="firstName" />
+
+            <button type="submit">Submit</button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }
