@@ -8,10 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "formik": "^2.2.6",
     "next": "10.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "sib-api-v3-sdk": "^8.2.0",
+    "uuid": "^8.3.2",
     "yup": "^0.32.8"
   }
 }

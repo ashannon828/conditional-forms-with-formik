@@ -1,8 +1,26 @@
-const countries = { russia: "", turkey: "", ukraine: "", other: "" };
+const fetch = require("node-fetch");
 
-// Add contact to sendinblue
-// Email contact
+const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
+
+const countries = {
+  russia: "you want to go to russia",
+  turkey: "you want to go to turkey",
+  ukraine: "you want to go to ukraine",
+  other: "we can help you go there",
+};
 
 export default (req, res) => {
-  res.status(200).json({ name: "John Doe" });
+  // Add contact to sendinblue
+  // Email contact
+  console.log(sendinblueApiKey);
+
+  const {
+    name,
+    email,
+    citizenship,
+    relocation_country,
+    other_country,
+  } = req.body;
+
+  res.status(200).json({ success: true });
 };

@@ -2,12 +2,18 @@ import Head from "next/head";
 
 import { Field, Form, Formik, FormikProps } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import countries from "../data/countries/countries";
 
 const submitFunc = (values, { setSubmitting, resetForm }) => {
   setSubmitting(true);
-  setTimeout(() => {
-    alert(JSON.stringify(values, null, 2));
-  }, 1000);
+  console.log(values);
+  axios
+    .post("/api/email-residency", {
+      ...values,
+    })
+    .then((res) => console.log(res));
   setSubmitting(false);
   resetForm();
 };
@@ -20,9 +26,10 @@ const validationShape = {
   confirmEmail: Yup.string()
     .oneOf([Yup.ref("email"), null], "Emails must match")
     .required("Confirm your email"),
-  citizenship: Yup.string()
-    .min(2, "Enter a valid country")
-    .required("Enter your country of citizenship"),
+  citizenship: Yup.string().matches(
+    /^((?!choose).)*$/,
+    "Choose your country of citizenship"
+  ),
   relocation_country: Yup.string(),
   other_country: Yup.string().when("relocation_country", {
     is: (country) => country === "other",
@@ -47,7 +54,7 @@ export default function residency() {
             name: "",
             email: "",
             confirmEmail: "",
-            citizenship: "",
+            citizenship: "choose",
             relocation_country: "russia",
             other_country: "",
             message: "",
@@ -77,7 +84,16 @@ export default function residency() {
               </div>
               <div>
                 <label htmlFor="citizenship">Country of Citizenship*</label>
-                <Field type="text" id="citizenship" name="citizenship" />
+                <Field as="select" id="citizenship" name="citizenship">
+                  <option key="choose" value="choose">
+                    Choose
+                  </option>
+                  {countries.map((country) => (
+                    <option key={uuidv4()} value={country.toLowerCase()}>
+                      {country}
+                    </option>
+                  ))}
+                </Field>
                 {touched.citizenship && errors.citizenship}
               </div>
               <div>
