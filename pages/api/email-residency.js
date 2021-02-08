@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
 const url = "https://api.sendinblue.com/v3/contacts";
 
-const countries = {
+const relocationDocs = {
   russia: "you want to go to russia",
   turkey: "you want to go to turkey",
   ukraine: "you want to go to ukraine",
