@@ -1,7 +1,5 @@
 const fetch = require("node-fetch");
-
-const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
-const url = "https://api.sendinblue.com/v3/contacts";
+const nodemailer = require("nodemailer");
 
 const relocationDocs = {
   russia: "you want to go to russia",
@@ -10,8 +8,31 @@ const relocationDocs = {
   other: "we can help you go there",
 };
 
+const url = "https://api.sendinblue.com/v3/contacts";
+const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
+
+const sendEmail = async (sendTo, sentFrom, subject, body) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "email",
+      pass: "pass",
+    },
+  });
+
+  const info = await transporter.sendMail({
+    from: sentFrom,
+    to: sendTo,
+    subject: subject,
+    text: body,
+  });
+
+  return info;
+};
+
 export default (req, res) => {
-  // Add contact to sendinblue
   // Email contact
 
   const {
@@ -23,6 +44,7 @@ export default (req, res) => {
   } = req.body;
 
   const relocate_to = !other_country ? relocation_country : other_country;
+
   const options = {
     method: "POST",
     headers: {
@@ -46,6 +68,13 @@ export default (req, res) => {
     .then((res) => res.json())
     .then((json) => console.log(json))
     .catch((err) => console.error("error:" + err));
+
+  sendEmail(
+    "ashannon828@gmail.com",
+    "ashannon@expatriant.com",
+    relocate_to,
+    relocationDocs[relocation_country]
+  );
 
   res.status(200).json({ success: true });
 };
