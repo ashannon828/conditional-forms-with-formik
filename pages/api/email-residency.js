@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const nodemailer = require("nodemailer");
 
 const relocationDocs = {
-  russia: "you want to go to russia",
+  russia: "its russia bruhh",
   turkey: "you want to go to turkey",
   ukraine: "you want to go to ukraine",
   other: "we can help you go there",
@@ -12,27 +12,30 @@ const url = "https://api.sendinblue.com/v3/contacts";
 const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
 
 const sendEmail = async (sendTo, sentFrom, subject, body) => {
+  console.log(process.env.EMAIL_ACCOUNT);
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    host: "smtp.flockmail.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
     auth: {
-      user: "email",
-      pass: "pass",
+      user: process.env.EMAIL_ACCOUNT,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
-  const info = await transporter.sendMail({
+  const res = await transporter.sendMail({
     from: sentFrom,
     to: sendTo,
     subject: subject,
     text: body,
   });
 
-  return info;
+  transporter.close();
+
+  return res;
 };
 
-export default (req, res) => {
+export default async (req, res) => {
   // Email contact
 
   const {
@@ -69,12 +72,14 @@ export default (req, res) => {
     .then((json) => console.log(json))
     .catch((err) => console.error("error:" + err));
 
-  sendEmail(
+  const asdf = await sendEmail(
     "ashannon828@gmail.com",
-    "ashannon@expatriant.com",
+    '"Expatriant" <info@expatriant.com>',
     relocate_to,
     relocationDocs[relocation_country]
   );
+
+  console.log(asdf);
 
   res.status(200).json({ success: true });
 };
