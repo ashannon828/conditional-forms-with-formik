@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const fetch = require("node-fetch");
 const nodemailer = require("nodemailer");
 
@@ -12,7 +14,6 @@ const url = "https://api.sendinblue.com/v3/contacts";
 const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
 
 const sendEmail = async (sendTo, sentFrom, subject, body) => {
-  console.log(process.env.EMAIL_ACCOUNT);
   const transporter = nodemailer.createTransport({
     host: "smtp.flockmail.com",
     port: 465,
@@ -35,18 +36,8 @@ const sendEmail = async (sendTo, sentFrom, subject, body) => {
   return res;
 };
 
-export default async (req, res) => {
-  // Email contact
-
-  const {
-    name,
-    email,
-    citizenship,
-    relocation_country,
-    other_country,
-  } = req.body;
-
-  const relocate_to = !other_country ? relocation_country : other_country;
+const addContact = async (contact, listId) => {
+  const { citizenship, email, name, relocate_to } = contact;
 
   const options = {
     method: "POST",
@@ -61,25 +52,46 @@ export default async (req, res) => {
         NAME: name,
         RELOCATE_TO: relocate_to,
       },
-      listIds: [4],
+      listIds: [listId],
       updateEnabled: true,
       email: email,
     }),
   };
 
-  fetch(url, options)
-    .then((res) => res.json())
-    .then((json) => console.log(json))
-    .catch((err) => console.error("error:" + err));
+  try {
+    const data = await fetch(url, options);
+    // console.log(data);
+    const res = await data.json();
+    console.log(res);
+  } catch (err) {
+    console.error("asdf", err);
+  }
+};
 
-  const asdf = await sendEmail(
-    "ashannon828@gmail.com",
-    '"Expatriant" <info@expatriant.com>',
-    relocate_to,
-    relocationDocs[relocation_country]
-  );
+export default async (req, res) => {
+  const {
+    name,
+    email,
+    citizenship,
+    relocation_country,
+    other_country,
+  } = req.body;
 
-  console.log(asdf);
+  const relocate_to = !other_country ? relocation_country : other_country;
+
+  const contact = { email, citizenship, name, relocate_to };
+  // // post to sendinblue
+  addContact(contact, 4);
+
+  // send email
+  // const sendEmailRes = await sendEmail(
+  //   email,
+  //   '"Expatriant" <info@expatriant.com>',
+  //   relocate_to,
+  //   relocationDocs[relocation_country]
+  // );
+
+  // console.log(sendEmailRes);
 
   res.status(200).json({ success: true });
 };

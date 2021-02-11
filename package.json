@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
     "formik": "^2.2.6",
     "next": "10.0.6",
     "nodemailer": "^6.4.17",
