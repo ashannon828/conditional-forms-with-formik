@@ -3,15 +3,11 @@ require("dotenv").config();
 const fetch = require("node-fetch");
 const nodemailer = require("nodemailer");
 
-const relocationDocs = {
-  russia: "its russia bruhh",
-  turkey: "you want to go to turkey",
-  ukraine: "you want to go to ukraine",
-  other: "we can help you go there",
-};
+const SibApiV3Sdk = require("sib-api-v3-sdk");
+let defaultClient = SibApiV3Sdk.ApiClient.instance;
 
-const url = "https://api.sendinblue.com/v3/contacts";
-const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
+let apiKey = defaultClient.authentications["api-key"];
+apiKey.apiKey = process.env.SENDINBLUE_API_KEY;
 
 const sendEmail = async (sendTo, sentFrom, subject, body) => {
   const transporter = nodemailer.createTransport({
@@ -36,36 +32,44 @@ const sendEmail = async (sendTo, sentFrom, subject, body) => {
   return res;
 };
 
-const addContact = async (contact, listId) => {
+const relocationDocs = {
+  russia: "its russia bruhh",
+  turkey: "you want to go to turkey",
+  ukraine: "you want to go to ukraine",
+  other: "we can help you go there",
+};
+
+const addToSendinblue = async (contact, listId) => {
   const { citizenship, email, name, relocate_to } = contact;
 
-  const options = {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "api-key": sendinblueApiKey,
-    },
-    body: JSON.stringify({
-      attributes: {
-        NATIONALITY: citizenship,
-        NAME: name,
-        RELOCATE_TO: relocate_to,
-      },
-      listIds: [listId],
-      updateEnabled: true,
-      email: email,
-    }),
-  };
+  let apiInstance = new SibApiV3Sdk.ContactsApi();
 
-  try {
-    const data = await fetch(url, options);
-    // console.log(data);
-    const res = await data.json();
-    console.log(res);
-  } catch (err) {
-    console.error("asdf", err);
-  }
+  // if contact:
+  // update
+  // else
+  // create
+
+  // if contact
+  const contactExists = await apiInstance.getContactInfo(email);
+  console.log(JSON.stringify(contactExists));
+
+  // create contact
+  // try {
+  //   let newContact = new SibApiV3Sdk.CreateContact();
+
+  //   newContact.email = email;
+  //   newContact.listIds = [listId];
+  //   newContact.attributes = {
+  //     NATIONALITY: citizenship,
+  //     NAME: name,
+  //     RELOCATE_TO: relocate_to,
+  //   };
+
+  //   const data = await apiInstance.createContact(newContact);
+  //   const res = JSON.stringify(data);
+  // } catch (err) {
+  //   return err;
+  // }
 };
 
 export default async (req, res) => {
@@ -81,7 +85,7 @@ export default async (req, res) => {
 
   const contact = { email, citizenship, name, relocate_to };
   // // post to sendinblue
-  addContact(contact, 4);
+  addToSendinblue(contact, 4);
 
   // send email
   // const sendEmailRes = await sendEmail(
