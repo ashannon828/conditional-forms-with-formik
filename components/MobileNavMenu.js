@@ -1,6 +1,5 @@
 import React from "react";
-import Link from "next/link";
-import { Box, Button, Layer, Text } from "grommet";
+import { Box, Layer, Text } from "grommet";
 import {
   Close,
   FacebookOption,
@@ -119,19 +118,6 @@ const MobileNavMenu = ({ toggleMobileMenu }) => {
               Contact
             </Text>
           </a>
-
-          <Link href="/hire-expats">
-            <Button
-              primary
-              size="large"
-              label="Post Job"
-              a11yTitle="Post a job"
-              color="brand"
-              onClick={() => {
-                toggleMobileMenu(false);
-              }}
-            />
-          </Link>
         </Box>
       </Box>
     </Layer>

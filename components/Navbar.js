@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Box, Button, Image, Header, Text } from "grommet";
 
-import { Menu, Add } from "grommet-icons";
+import { Menu } from "grommet-icons";
 
 import Link from "next/link";
 import logo from "../public/img/expatriant_logo.png";
@@ -34,7 +34,7 @@ export default function Navbar({ size }) {
         </Link>
         <Box fill="vertical" direction="row">
           <ul className={style.ListFormat}>
-            <li className={style.ActiveTab}>
+            <li className={style.UnderlineAnimation}>
               <Link href="/">
                 <Box
                   fill="vertical"
@@ -91,7 +91,7 @@ export default function Navbar({ size }) {
                 </Box>
               </a>
             </li>
-            <li className={style.UnderlineAnimation}>
+            <li className={style.ActiveTab}>
               <a
                 className={style.NavAnchorTag}
                 href="https://expatriant.com/contact/"
@@ -112,19 +112,6 @@ export default function Navbar({ size }) {
               </a>
             </li>
           </ul>
-
-          <Box justify="center">
-            <Link href="/hire-expats">
-              <Button
-                hoverIndicator="string"
-                size={size}
-                label="Post Job"
-                a11yTitle="Post a job"
-                color="brand"
-                primary={true}
-              />
-            </Link>
-          </Box>
         </Box>
       </Header>
     ) : (
@@ -154,11 +141,8 @@ export default function Navbar({ size }) {
                 <Image fit="cover" src={logo} />
               </Box>
             </Link>
-            <Link href="/hire-expats">
-              <Box width="35px" height="35px" align="center" justify="center">
-                <Add color="brand" a11yTitle="Post a job" />
-              </Box>
-            </Link>
+
+            <Box width="35px" height="35px" align="center" justify="center" />
           </Box>
         </Header>
         {mobileOpen && (

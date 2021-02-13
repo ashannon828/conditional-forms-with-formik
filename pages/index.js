@@ -1,30 +1,27 @@
 import React from "react";
+import { Box, Heading, Text } from "grommet";
 
 import { Field, Form, Formik, FormikProps } from "formik";
 
 export default function Home() {
   return (
-    <div>
-      <h1>My Form</h1>
-
-      <Formik
-        initialValues={{ email: "", color: "red", firstName: "", lastName: "" }}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-
-            actions.setSubmitting(false);
-          }, 1000);
-        }}
-      >
-        {(FormikProps) => (
-          <Form>
-            <Field name="firstName" placeholder="firstName" />
-
-            <button type="submit">Submit</button>
-          </Form>
-        )}
-      </Formik>
-    </div>
+    <Box>
+      <Heading>What do you want help with?</Heading>
+      <Box direction="row">
+        <Box width="50%" background="green">
+          <a href="/residency">
+            <Text>Residency</Text>
+          </a>
+          <a href="/residency">
+            <Text>Residency</Text>
+          </a>
+        </Box>
+        <Box width="50%" background="gray">
+          <a href="/residency">
+            <Text>Residency</Text>
+          </a>
+        </Box>
+      </Box>
+    </Box>
   );
 }
