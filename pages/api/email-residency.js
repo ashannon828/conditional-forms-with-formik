@@ -68,6 +68,7 @@ export default async (req, res) => {
     citizenship,
     relocation_country,
     other_country,
+    message,
   } = req.body;
 
   const relocate_to = !other_country ? relocation_country : other_country;
@@ -82,7 +83,7 @@ export default async (req, res) => {
     email,
     '"Expatriant" <info@expatriant.com>',
     relocate_to,
-    relocationDocs[relocation_country]
+    `${relocationDocs[relocation_country]}\n\n\n>>${message}`
   );
 
   res.status(200).json({ success: true });
