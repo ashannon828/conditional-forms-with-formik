@@ -2,10 +2,6 @@ import React from "react";
 
 import { Field, Form, Formik, FormikProps } from "formik";
 
-const MyInput = ({ field, form, ...props }) => {
-  return <input {...field} {...props} />;
-};
-
 export default function Home() {
   return (
     <div>

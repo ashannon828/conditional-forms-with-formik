@@ -1,7 +1,12 @@
-import '../styles/globals.css'
+import "../public/styles/global_styles.css";
+import ExpatriantLayout from "../layouts/ExpatriantLayout";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <ExpatriantLayout>
+      <Component {...pageProps} />
+    </ExpatriantLayout>
+  );
 }
 
-export default MyApp
+export default MyApp;

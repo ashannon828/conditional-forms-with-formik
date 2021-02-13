@@ -8,12 +8,9 @@ import countries from "../data/countries/countries";
 
 const submitFunc = (values, { setSubmitting, resetForm }) => {
   setSubmitting(true);
-  console.log(values);
-  axios
-    .post("/api/email-residency", {
-      ...values,
-    })
-    .then((res) => console.log(res));
+  axios.post("/api/email-residency", {
+    ...values,
+  });
   setSubmitting(false);
   resetForm();
 };
