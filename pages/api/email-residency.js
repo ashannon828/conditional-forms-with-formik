@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const fetch = require("node-fetch");
 const nodemailer = require("nodemailer");
 
@@ -44,32 +42,23 @@ const addToSendinblue = async (contact, listId) => {
 
   let apiInstance = new SibApiV3Sdk.ContactsApi();
 
-  // if contact:
-  // update
-  // else
-  // create
+  try {
+    let newContact = new SibApiV3Sdk.CreateContact();
 
-  // if contact
-  const contactExists = await apiInstance.getContactInfo(email);
-  console.log(JSON.stringify(contactExists));
+    newContact.email = email;
+    newContact.updateEnabled = true;
+    newContact.listIdsls = [listId];
+    newContact.attributes = {
+      NATIONALITY: citizenship,
+      NAME: name,
+      RELOCATE_TO: relocate_to,
+    };
 
-  // create contact
-  // try {
-  //   let newContact = new SibApiV3Sdk.CreateContact();
-
-  //   newContact.email = email;
-  //   newContact.listIds = [listId];
-  //   newContact.attributes = {
-  //     NATIONALITY: citizenship,
-  //     NAME: name,
-  //     RELOCATE_TO: relocate_to,
-  //   };
-
-  //   const data = await apiInstance.createContact(newContact);
-  //   const res = JSON.stringify(data);
-  // } catch (err) {
-  //   return err;
-  // }
+    const data = await apiInstance.createContact(newContact);
+    console.log(data);
+  } catch (err) {
+    return err;
+  }
 };
 
 export default async (req, res) => {
@@ -84,18 +73,17 @@ export default async (req, res) => {
   const relocate_to = !other_country ? relocation_country : other_country;
 
   const contact = { email, citizenship, name, relocate_to };
-  // // post to sendinblue
-  addToSendinblue(contact, 4);
+
+  // post OR update to sendinblue
+  const addContact = await addToSendinblue(contact, 4);
 
   // send email
-  // const sendEmailRes = await sendEmail(
-  //   email,
-  //   '"Expatriant" <info@expatriant.com>',
-  //   relocate_to,
-  //   relocationDocs[relocation_country]
-  // );
-
-  // console.log(sendEmailRes);
+  const sendEmailRes = await sendEmail(
+    email,
+    '"Expatriant" <info@expatriant.com>',
+    relocate_to,
+    relocationDocs[relocation_country]
+  );
 
   res.status(200).json({ success: true });
 };
