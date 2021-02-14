@@ -1,7 +1,17 @@
 import Head from "next/head";
 
-import { Field, Form, Formik } from "formik";
-import { Box } from "grommet";
+import { Field, Formik } from "formik";
+import {
+  Box,
+  Button,
+  Form,
+  FormField,
+  Heading,
+  Select,
+  TextInput,
+  Text,
+  TextArea,
+} from "grommet";
 import * as Yup from "yup";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
@@ -20,7 +30,7 @@ const validationShape = {
   name: Yup.string().required("Enter your name"),
   email: Yup.string()
     .email("Enter a valid email")
-    .required("Enter an email address"),
+    .required("Enter your email address"),
   confirmEmail: Yup.string()
     .oneOf([Yup.ref("email"), null], "Emails must match")
     .required("Confirm your email"),
@@ -46,7 +56,7 @@ export default function residency() {
       </Head>
 
       <main>
-        <Box overflow="hidden">
+        <Box pad="1rem">
           <h1>Residency Consultation</h1>
           <Formik
             initialValues={{
@@ -61,25 +71,68 @@ export default function residency() {
             validationSchema={validationSchema}
             onSubmit={submitFunc}
           >
-            {({ values, errors, touched, isSubmitting }) => (
+            {({
+              values,
+              errors,
+              touched,
+              isSubmitting,
+              handleChange,
+              handleBlur,
+            }) => (
               <Form>
-                <div>
-                  <label htmlFor="name">Name*</label>
-                  <Field type="text" id="name" name="name" />
-                  {touched.name && errors.name}
-                </div>
-                <div>
-                  <label htmlFor="email">Email*</label>
-                  <Field type="text" id="email" name="email" />
-                  {touched.email && errors.email}
-                </div>
-                <div>
-                  <label htmlFor="confirmEmail">Confirm Email*</label>
-                  <Field type="text" id="confirmEmail" name="confirmEmail" />
-                  {touched.confirmEmail && errors.confirmEmail}
-                </div>
-                <div>
-                  <label htmlFor="citizenship">Country of Citizenship*</label>
+                <FormField
+                  htmlFor="name"
+                  error={touched.name && errors.name}
+                  label="Name*"
+                  a11yTitle="Enter your name"
+                >
+                  <TextInput
+                    value={values.name}
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </FormField>
+                <FormField
+                  htmlFor="email"
+                  error={touched.email && errors.email}
+                  label="Email*"
+                  a11yTitle="Enter your email"
+                >
+                  <TextInput
+                    value={values.email}
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </FormField>
+
+                <FormField
+                  htmlFor="confirmEmail"
+                  error={touched.confirmEmail && errors.confirmEmail}
+                  label="Confirm Email*"
+                  a11yTitle="Confirm your email"
+                >
+                  <TextInput
+                    value={values.confirmEmail}
+                    id="confirmEmail"
+                    name="confirmEmail"
+                    placeholder="Confirm your email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </FormField>
+
+                <FormField
+                  htmlFor="citizenship"
+                  error={touched.citizenship && errors.citizenship}
+                  label="Country of Citizenship*"
+                  a11yTitle="Confirm your email"
+                >
                   <Field as="select" id="citizenship" name="citizenship">
                     <option key="choose" value="choose">
                       Choose
@@ -90,10 +143,16 @@ export default function residency() {
                       </option>
                     ))}
                   </Field>
-                  {touched.citizenship && errors.citizenship}
-                </div>
-                <div>
-                  <label htmlFor="relocation_country">Choose a country</label>
+                </FormField>
+
+                <FormField
+                  htmlFor="relocation_country"
+                  error={
+                    touched.relocation_country && errors.relocation_country
+                  }
+                  label="I want to move to*"
+                  a11yTitle="Confirm your email"
+                >
                   <Field
                     as="select"
                     id="relocation_country"
@@ -104,23 +163,51 @@ export default function residency() {
                     <option value="ukraine">Ukraine</option>
                     <option value="other">Other</option>
                   </Field>
-                </div>
+                </FormField>
+
                 {values.relocation_country === "other" && (
-                  <div>
-                    <label htmlFor="other_country">Enter a country*</label>
-                    <Field id="other_country" name="other_country" />
-                    {touched.other_country && errors.other_country}
-                  </div>
+                  <FormField
+                    htmlFor="other_country"
+                    error={touched.other_country && errors.other_country}
+                    label="Where do you want to move?*"
+                    required="true"
+                    a11yTitle="Confirm your email"
+                  >
+                    <TextInput
+                      value={values.other_country}
+                      id="other_country"
+                      name="other_country"
+                      placeholder="Enter a country"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </FormField>
                 )}
-                <div>
-                  <label htmlFor="message">Message</label>
-                  <Field as="textarea" id="message" name="message" />
-                </div>
-                <div>
-                  <button type="submit" disabled={isSubmitting}>
-                    Send
-                  </button>
-                </div>
+
+                <FormField
+                  htmlFor="message"
+                  error={touched.message && errors.message}
+                  label="Message"
+                  a11yTitle="Enter a message"
+                >
+                  <TextArea
+                    value={values.message}
+                    id="message"
+                    name="message"
+                    placeholder="Enter your message"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </FormField>
+                <Box>
+                  <Button
+                    alignSelf="center"
+                    primary
+                    label="Send"
+                    type="submit"
+                    disabled={isSubmitting}
+                  />
+                </Box>
               </Form>
             )}
           </Formik>

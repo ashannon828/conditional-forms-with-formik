@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Text } from "grommet";
+import { Anchor, Box, Heading, Text } from "grommet";
 
 import { Field, Form, Formik, FormikProps } from "formik";
 
@@ -8,18 +8,11 @@ export default function Home() {
     <Box>
       <Heading>What do you want help with?</Heading>
       <Box direction="row">
-        <Box width="50%" background="green">
-          <a href="/residency">
-            <Text>Residency</Text>
-          </a>
-          <a href="/residency">
-            <Text>Residency</Text>
-          </a>
+        <Box width="50%">
+          <Anchor href="/residency">Residency Abroad</Anchor>
         </Box>
-        <Box width="50%" background="gray">
-          <a href="/residency">
-            <Text>Residency</Text>
-          </a>
+        <Box width="50%">
+          <Anchor href="/">Career Consultation</Anchor>
         </Box>
       </Box>
     </Box>
