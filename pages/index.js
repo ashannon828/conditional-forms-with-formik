@@ -5,13 +5,13 @@ import { Field, Form, Formik, FormikProps } from "formik";
 
 export default function Home() {
   return (
-    <Box>
-      <Heading>What do you want help with?</Heading>
+    <Box pad="medium" margin="large">
+      <Heading size="small">How can we help?</Heading>
       <Box direction="row">
-        <Box width="50%">
+        <Box pad="small">
           <Anchor href="/residency">Residency Abroad</Anchor>
         </Box>
-        <Box width="50%">
+        <Box pad="small">
           <Anchor href="/">Career Consultation</Anchor>
         </Box>
       </Box>

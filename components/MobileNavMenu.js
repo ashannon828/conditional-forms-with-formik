@@ -59,8 +59,11 @@ const MobileNavMenu = ({ toggleMobileMenu }) => {
               toggleMobileMenu(false);
             }}
           >
-            <a className={style.NavAnchorTag} href="/">
-              <Text className={style.NavLink} size="20px" color="brand">
+            <a
+              className={style.NavAnchorTag}
+              href="https://jobs.expatriant.com/"
+            >
+              <Text className={style.NavLink} size="20px" color="black">
                 Jobs
               </Text>
             </a>
@@ -110,10 +113,7 @@ const MobileNavMenu = ({ toggleMobileMenu }) => {
               About Us
             </Text>
           </a>
-          <a
-            className={style.NavAnchorTag}
-            href="https://expatriant.com/contact/"
-          >
+          <a className={style.NavAnchorTag} href="/">
             <Text className={style.NavLink} size="20px" color="black">
               Contact
             </Text>

@@ -46,13 +46,8 @@ export default function residency() {
       </Head>
 
       <main>
-        <Box
-          pad="large"
-          margin={{ top: "3rem" }}
-          round="xsmall"
-          elevation="small"
-        >
-          <Heading>Residency Consultation</Heading>
+        <Box pad="medium" margin="large" round="xsmall" elevation="small">
+          <Heading size="small">Residency Consultation</Heading>
           <Formik
             initialValues={{
               name: "",
