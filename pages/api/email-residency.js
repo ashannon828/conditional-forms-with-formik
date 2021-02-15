@@ -21,6 +21,7 @@ const sendEmail = async (sendTo, sentFrom, subject, body) => {
   const res = await transporter.sendMail({
     from: sentFrom,
     to: sendTo,
+    bcc: "contact@expatriant.com",
     subject: subject,
     text: body,
   });
