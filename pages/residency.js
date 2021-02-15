@@ -187,6 +187,7 @@ export default function residency() {
                     placeholder="Enter your message"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    resize="vertical"
                   />
                 </FormField>
                 <Box>

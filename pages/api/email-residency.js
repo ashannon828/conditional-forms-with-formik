@@ -83,7 +83,7 @@ export default async (req, res) => {
     email,
     '"Expatriant" <info@expatriant.com>',
     relocate_to,
-    `${relocationDocs[relocation_country]}\n\n\n>>${message}`
+    `${relocationDocs[relocation_country]}\n\n\n>>Name: ${name}\n>>Email: ${email}\n>>Nationality: ${citizenship}\n>>Relocate to: ${relocate_to}\n>>Message:\n${message}`
   );
 
   res.status(200).json({ success: true });
