@@ -1,17 +1,7 @@
 import Head from "next/head";
 
-import { Field, Formik } from "formik";
-import {
-  Box,
-  Button,
-  Form,
-  FormField,
-  Heading,
-  Select,
-  TextInput,
-  Text,
-  TextArea,
-} from "grommet";
+import { Field, Form, Formik } from "formik";
+import { Box, Button, FormField, TextInput, TextArea } from "grommet";
 import * as Yup from "yup";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
