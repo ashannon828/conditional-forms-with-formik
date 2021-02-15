@@ -1,7 +1,7 @@
 import Head from "next/head";
 
 import { Field, Form, Formik } from "formik";
-import { Box, Button, FormField, TextInput, TextArea } from "grommet";
+import { Box, Button, FormField, Heading, TextInput, TextArea } from "grommet";
 import * as Yup from "yup";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
@@ -46,8 +46,13 @@ export default function residency() {
       </Head>
 
       <main>
-        <Box pad="1rem">
-          <h1>Residency Consultation</h1>
+        <Box
+          pad="large"
+          margin={{ top: "3rem" }}
+          round="xsmall"
+          elevation="small"
+        >
+          <Heading>Residency Consultation</Heading>
           <Formik
             initialValues={{
               name: "",
