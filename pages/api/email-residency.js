@@ -7,30 +7,6 @@ let defaultClient = SibApiV3Sdk.ApiClient.instance;
 let apiKey = defaultClient.authentications["api-key"];
 apiKey.apiKey = process.env.SENDINBLUE_API_KEY;
 
-const sendEmail = async (sendTo, sentFrom, subject, body) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.flockmail.com",
-    port: 465,
-    secure: true, // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_ACCOUNT,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-
-  const res = await transporter.sendMail({
-    from: sentFrom,
-    to: sendTo,
-    bcc: "contact@expatriant.com",
-    subject: subject,
-    text: body,
-  });
-
-  transporter.close();
-
-  return res;
-};
-
 const relocationDocs = {
   russia: "its russia bruhh",
   turkey: "you want to go to turkey",
@@ -60,6 +36,32 @@ const addToSendinblue = async (contact, listId) => {
   } catch (err) {
     return err;
   }
+};
+
+const sendEmail = async (sendTo, sentFrom, subject, body) => {
+  console.log(`email: ${process.env.EMAIL_ACCOUNT}`);
+  console.log(`${process.env.EMAIL_PASSWORD}`);
+  const transporter = nodemailer.createTransport({
+    host: "smtp.flockmail.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: process.env.EMAIL_ACCOUNT,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const res = await transporter.sendMail({
+    from: sentFrom,
+    to: sendTo,
+    bcc: "contact@expatriant.com",
+    subject: subject,
+    text: body,
+  });
+
+  transporter.close();
+
+  return res;
 };
 
 export default async (req, res) => {
