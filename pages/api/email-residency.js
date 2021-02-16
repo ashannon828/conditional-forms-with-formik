@@ -39,8 +39,6 @@ const addToSendinblue = async (contact, listId) => {
 };
 
 const sendEmail = async (sendTo, sentFrom, subject, body) => {
-  console.log(`email: ${process.env.EMAIL_ACCOUNT}`);
-  console.log(`${process.env.EMAIL_PASSWORD}`);
   const transporter = nodemailer.createTransport({
     host: "smtp.flockmail.com",
     port: 465,
@@ -73,6 +71,9 @@ export default async (req, res) => {
     other_country,
     message,
   } = req.body;
+
+  console.log(`email: ${process.env.EMAIL_ACCOUNT}`);
+  console.log(`${process.env.EMAIL_PASSWORD}`);
 
   const relocate_to = !other_country ? relocation_country : other_country;
 
