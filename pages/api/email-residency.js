@@ -89,6 +89,8 @@ export default async (req, res) => {
     relocate_to,
     `${relocationDocs[relocation_country]}\n\n\n>>Name: ${name}\n>>Email: ${email}\n>>Nationality: ${citizenship}\n>>Relocate to: ${relocate_to}\n>>Message:\n${message}`
   );
-
+  console.log("testing 123");
+  console.log(`email: ${process.env.EMAIL_ACCOUNT}`);
+  console.log(`${process.env.EMAIL_PASSWORD}`);
   res.status(200).json({ success: true });
 };
