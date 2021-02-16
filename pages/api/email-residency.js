@@ -71,7 +71,7 @@ export default async (req, res) => {
     other_country,
     message,
   } = req.body;
-
+  console.log("testing 123");
   console.log(`email: ${process.env.EMAIL_ACCOUNT}`);
   console.log(`${process.env.EMAIL_PASSWORD}`);
 
