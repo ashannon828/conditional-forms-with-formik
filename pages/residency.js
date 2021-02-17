@@ -133,7 +133,7 @@ export default function residency() {
                     htmlFor="citizenship"
                     error={touched.citizenship && errors.citizenship}
                     label="Country of Citizenship*"
-                    a11yTitle="Confirm your email"
+                    a11yTitle="Choose your country of citizenship"
                   >
                     <Field as="select" id="citizenship" name="citizenship">
                       <option key="choose" value="choose">
@@ -153,7 +153,7 @@ export default function residency() {
                       touched.relocation_country && errors.relocation_country
                     }
                     label="I want to move to*"
-                    a11yTitle="Confirm your email"
+                    a11yTitle="Choose the country you want to move to"
                   >
                     <Field
                       as="select"
